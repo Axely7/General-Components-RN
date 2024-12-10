@@ -2,8 +2,17 @@ import ThemedButton from "@/presentation/shared/ThemedButton";
 import ThemedView from "@/presentation/shared/ThemedView";
 import { useRef } from "react";
 import { Animated, Easing } from "react-native";
+import { useAnimation } from "../../hooks/useAnimation";
 
 const Animation101Screen = () => {
+  const {
+    animatedTop,
+    animatedOpacity,
+    fadeIn,
+    fadeOut,
+    startMovingTopPosition,
+  } = useAnimation();
+
   return (
     <ThemedView margin className="justify-center items-center flex-1">
       <Animated.View
@@ -19,10 +28,19 @@ const Animation101Screen = () => {
           ],
         }}
       />
-      <ThemedButton className="my-5" onPress={fadeIn}>
+      <ThemedButton
+        className="my-5"
+        onPress={() => {
+          fadeIn({});
+          startMovingTopPosition({
+            easing: Easing.bounce,
+            duration: 700,
+          });
+        }}
+      >
         FadeIn
       </ThemedButton>
-      <ThemedButton className="my-5" onPress={fadeOut}>
+      <ThemedButton className="my-5" onPress={() => fadeOut({})}>
         FadeOut
       </ThemedButton>
     </ThemedView>

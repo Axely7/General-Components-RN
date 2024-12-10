@@ -1,33 +1,63 @@
 import React, { useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, Easing } from "react-native";
 
 export const useAnimation = () => {
   const animatedOpacity = useRef(new Animated.Value(0)).current;
   const animatedTop = useRef(new Animated.Value(-100)).current;
 
-  const fadeIn = () => {
+  const fadeIn = ({
+    duration = 300,
+    toValue = 1,
+    useNativeDriver = true,
+    easing = Easing.linear,
+    callback = () => {},
+  }) => {
     Animated.timing(animatedOpacity, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
+      toValue,
+      duration,
+      useNativeDriver,
+      easing,
+    }).start(callback);
+  };
 
+  const fadeOut = ({
+    duration = 300,
+    toValue = 0,
+    useNativeDriver = true,
+    easing = Easing.ease,
+    callback = () => {},
+  }) => {
+    Animated.timing(animatedOpacity, {
+      toValue,
+      duration,
+      useNativeDriver,
+      easing,
+    }).start(callback);
+  };
+
+  const startMovingTopPosition = ({
+    initialPosition = -100,
+    duration = 300,
+    toValue = 1,
+    useNativeDriver = true,
+    easing = Easing.ease,
+    callback = () => {},
+  }) => {
+    animatedTop.setValue(initialPosition);
     Animated.timing(animatedTop, {
-      toValue: 0,
-      duration: 700,
-      useNativeDriver: true,
+      toValue,
+      duration,
+      useNativeDriver,
       // easing: Easing.elastic(2),
-      easing: Easing.bounce,
-    }).start();
+      easing,
+    }).start(callback);
   };
 
-  const fadeOut = () => {
-    Animated.timing(animatedOpacity, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => animatedTop.setValue(-100));
+  return {
+    animatedTop,
+    animatedOpacity,
+    fadeIn,
+    fadeOut,
+    startMovingTopPosition,
   };
-
-  return {};
 };
