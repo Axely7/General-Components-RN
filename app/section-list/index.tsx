@@ -98,9 +98,24 @@ const SectionListScreen = () => {
               Personajes
             </ThemedText>
           )}
-          renderSectionHeader={({ section }) => {
-            <ThemedText></ThemedText>;
-          }}
+          renderSectionHeader={({ section }) => (
+            <ThemedText
+              type="h1"
+              className="bg-light-background dark:bg-dark-background p-2 rounded"
+            >
+              {section.title}
+            </ThemedText>
+          )}
+          stickySectionHeadersEnabled
+          ListFooterComponent={() => (
+            <ThemedText
+              type="h1"
+              className="bg-light-background dark:bg-dark-background p-2 font-bold mb-10 rounded"
+            >
+              Secciones: {houses.length}
+            </ThemedText>
+          )}
+          showsVerticalScrollIndicator={false}
         />
       </ThemedCard>
     </ThemedView>
