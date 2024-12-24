@@ -3,17 +3,19 @@ import ThemedView from "../../presentation/shared/ThemedView";
 import ThemedCard from "@/presentation/shared/ThemedCard";
 import ThemedSwitch from "@/presentation/shared/ThemedSwitch";
 import { useState } from "react";
-import { useColorScheme } from "../../hooks/useColorScheme.web";
+import { useThemeChangerContext } from "../../presentation/context/ThemeChangerContext";
 
 const ThemesScreen = () => {
-  const theme = useColorScheme();
+  const { toggleTheme, currentTheme, setSystemTheme, isSystemTheme } =
+    useThemeChangerContext();
 
   const [darkModeSettings, setDarkModeSettings] = useState({
-    darkMode: theme === "dark",
-    systemMode: false,
+    darkMode: currentTheme === "dark",
+    systemMode: isSystemTheme,
   });
 
   const setDarkMode = (value: boolean) => {
+    toggleTheme();
     setDarkModeSettings({
       darkMode: value,
       systemMode: false,
@@ -21,6 +23,10 @@ const ThemesScreen = () => {
   };
 
   const setSystemMode = (value: boolean) => {
+    if (value) {
+      setSystemTheme();
+    }
+
     setDarkModeSettings({
       darkMode: darkModeSettings.darkMode,
       systemMode: value,
